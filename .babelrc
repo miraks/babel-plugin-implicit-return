@@ -1,4 +1,4 @@
 {
   "presets": ["es2015"],
-  "plugins": ["./lib/index.js"]
+  "plugins": ["strict-equality"]
 }
