@@ -77,22 +77,22 @@ There're four workarounds:
 ```javascript
 // first - use arrow function
 function getFunction() {
-  () => {}
+  () => {};
 }
 
 // second - give your function a name
 function getObject() {
-  function fn() {}
+  function fn() {};
 }
 
 // third - assign a function to a variable/constant
 function getObject() {
-  const fn = function() {}
+  const fn = function() {};
 }
 
 // fourth - wrap a function in braces
 function getObject() {
-  (function() {})
+  (function() {});
 }
 ```
 
