@@ -16,7 +16,9 @@
   },
   "keywords": [
     "babel",
-    "babel-plugin"
+    "babel-plugin",
+    "implicit return",
+    "auto return"
   ],
   "author": "Alexey Volodkin <a@vldkn.net>",
   "license": "MIT",
