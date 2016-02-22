@@ -56,6 +56,10 @@ export default ({ types: t }) => {
             id = last(id.elements).argument
           }
 
+          if (t.isObjectPattern(id)) {
+            id = last(id.properties).argument
+          }
+
           body.push(t.returnStatement(id))
           return
         }
