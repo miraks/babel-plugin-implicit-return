@@ -1,7 +1,7 @@
 {
   "name": "babel-plugin-implicit-return",
   "version": "1.0.0",
-  "description": "Implicitly return function results",
+  "description": "Implicitly return function result",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src/index.js -o lib/index.js",

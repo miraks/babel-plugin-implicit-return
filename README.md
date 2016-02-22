@@ -1,6 +1,6 @@
 # babel-plugin-implicit-return
 
-Implicitly return function results
+Implicitly return function result
 
 ## Installation
 
