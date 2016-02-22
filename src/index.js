@@ -21,7 +21,7 @@ export default ({ types: t }) => {
         // empty function
         if (t.isReturnStatement(lastNode)) return
 
-        // variable declaration
+        // variables declaration
         if (t.isVariableDeclaration(lastNode)) {
           const declaration = last(lastNode.declarations)
           body.push(t.returnStatement(declaration.id))
