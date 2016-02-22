@@ -14,7 +14,7 @@ $ npm install --save-dev babel-plugin-implicit-return
 
 **.babelrc**
 
-```js
+```json
 {
   "plugins": ["implicit-return"]
 }
