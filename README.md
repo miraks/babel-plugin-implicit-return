@@ -36,9 +36,11 @@ require("babel-core").transform("code", {
 
 ## Quirks
 
+Due to JavaScript syntax limitations this plugin can't make a function to implicitly return:
+
 ### Object literal
 
-This plugin can't make a function to implicitly return an object literal due to JavaScript syntax limitation. So this won't work:
+This won't work:
 
 ```javascript
 function getObject() {
@@ -46,10 +48,10 @@ function getObject() {
 }
 ```
 
-There are two workarounds:
+There're two workarounds:
 
 ```javascript
-// first - assign a result to a variable/constant
+// first - assign an object to a variable/constant
 function getObject() {
   const obj = { key1: value1, key2: value2 };
 }
@@ -57,6 +59,40 @@ function getObject() {
 // second - wrap an object literal in braces
 function getObject() {
   ({ key1: value1, key2: value2 });
+}
+```
+
+### Function expression
+
+This won't work:
+
+```javascript
+function getFunction() {
+  function() {};
+}
+```
+
+There're four workarounds:
+
+```javascript
+// first - use arrow function
+function getFunction() {
+  () => {}
+}
+
+// second - give your function a name
+function getObject() {
+  function fn() {}
+}
+
+// third - assign a function to a variable/constant
+function getObject() {
+  const fn = function() {}
+}
+
+// fourth - wrap a function in braces
+function getObject() {
+  (function() {})
 }
 ```
 
