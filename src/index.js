@@ -5,7 +5,9 @@ export default ({ types: t }) => {
   const last = (array) => array[array.length - 1]
 
   const lastNotEmptyIndex = (nodes) => {
-    return nodes.reverse().findIndex((node) => !t.isEmptyStatement(node))
+    for (let index = nodes.length - 1; index >= 0; index -= 1) {
+      if (!t.isEmptyStatement(nodes[index])) return index
+    }
   }
 
   // like babel-types#toExpression, but preserves function expressions
@@ -48,8 +50,13 @@ export default ({ types: t }) => {
 
         // variables declaration
         if (t.isVariableDeclaration(lastNode)) {
-          const declaration = last(lastNode.declarations)
-          body.push(t.returnStatement(declaration.id))
+          let { id } = last(lastNode.declarations)
+
+          if (t.isArrayPattern(id)) {
+            id = last(id.elements).argument
+          }
+
+          body.push(t.returnStatement(id))
           return
         }
 
