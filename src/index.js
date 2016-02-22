@@ -4,8 +4,10 @@ export default ({ types: t }) => {
       Function(path) {
         const { body, directives } = path.node.body
 
-        // function with plain directives only
-        if (body.length == 0 && directives.length != 0) {
+        if (body.length == 0) {
+          if (directives.length == 0) return
+
+          // function with directives only
           const directive = directives.pop()
           body.push(t.returnStatement(t.stringLiteral(directive.value.value)))
           return
