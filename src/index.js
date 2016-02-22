@@ -1,12 +1,34 @@
-const last = (array) => array[array.length - 1]
-
 export default ({ types: t }) => {
+  const last = (array) => array[array.length - 1]
+
+  const lastNotEmptyIndex = (nodes) => {
+    return nodes.reverse().findIndex((node) => !t.isEmptyStatement(node))
+  }
+
+  // like babel-types#toExpression, but preserves function expressions
+  const toExpression = (node) => {
+    if (t.isExpressionStatement(node)) node = node.expression
+
+    if (t.isClass(node)) {
+      node.type = "ClassExpression"
+    } else if (t.isFunctionDeclaration(node)) {
+      node.type = "FunctionExpression"
+    }
+
+    if (t.isExpression(node)) return node
+    throw new Error(`cannot turn ${node.type} to an expression`)
+  }
+
   return {
     visitor: {
-      Function(path) {
-        const { body, directives } = path.node.body
+      Function({ node }) {
+        // arrow function expression
+        if (node.expression) return
+
+        const { body, directives } = node.body
 
         if (body.length == 0) {
+          // empty function
           if (directives.length == 0) return
 
           // function with directives only
@@ -15,10 +37,10 @@ export default ({ types: t }) => {
           return
         }
 
-        const lastIndex = body.length - 1
-        const lastNode = last(body)
+        const lastIndex = lastNotEmptyIndex(body)
+        const lastNode = body[lastIndex]
 
-        // empty function
+        // explicit return
         if (t.isReturnStatement(lastNode)) return
 
         // variables declaration
@@ -28,7 +50,7 @@ export default ({ types: t }) => {
           return
         }
 
-        body[lastIndex] = t.returnStatement(t.toExpression(lastNode))
+        body[lastIndex] = t.returnStatement(toExpression(lastNode))
       }
     }
   }
