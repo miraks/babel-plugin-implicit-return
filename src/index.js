@@ -1,4 +1,7 @@
 export default ({ types: t }) => {
+  const unreturnableStatements = new Set(["DebuggerStatement", "WithStatement", "ReturnStatement", "LabeledStatement",
+    "BreakStatement", "ContinueStatement", "ThrowStatement"])
+
   const last = (array) => array[array.length - 1]
 
   const lastNotEmptyIndex = (nodes) => {
@@ -40,8 +43,8 @@ export default ({ types: t }) => {
         const lastIndex = lastNotEmptyIndex(body)
         const lastNode = body[lastIndex]
 
-        // explicit return
-        if (t.isReturnStatement(lastNode)) return
+        // skip unreturnable statements
+        if (unreturnableStatements.has(lastNode.type)) return
 
         // variables declaration
         if (t.isVariableDeclaration(lastNode)) {
