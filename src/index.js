@@ -1,3 +1,5 @@
+const last = (array) => array[array.length - 1]
+
 export default ({ types: t }) => {
   return {
     visitor: {
@@ -14,10 +16,17 @@ export default ({ types: t }) => {
         }
 
         const lastIndex = body.length - 1
-        const lastNode = body[lastIndex]
+        const lastNode = last(body)
 
         // empty function
         if (t.isReturnStatement(lastNode)) return
+
+        // variable declaration
+        if (t.isVariableDeclaration(lastNode)) {
+          const declaration = last(lastNode.declarations)
+          body.push(t.returnStatement(declaration.id))
+          return
+        }
 
         body[lastIndex] = t.returnStatement(t.toExpression(lastNode))
       }

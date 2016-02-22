@@ -1,7 +1,7 @@
 {
-  "name": "babel-plugin-auto-return",
+  "name": "babel-plugin-implicit-return",
   "version": "1.0.0",
-  "description": "Auto return function result",
+  "description": "Implicitly return function results",
   "main": "lib/index.js",
   "scripts": {
     "build": "babel src/index.js -o lib/index.js",
@@ -12,7 +12,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/miraks/babel-plugin-auto-return"
+    "url": "https://github.com/miraks/babel-plugin-implicit-return"
   },
   "keywords": [
     "babel",
@@ -21,9 +21,9 @@
   "author": "Alexey Volodkin <a@vldkn.net>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/miraks/babel-plugin-auto-return/issues"
+    "url": "https://github.com/miraks/babel-plugin-implicit-return/issues"
   },
-  "homepage": "https://github.com/miraks/babel-plugin-auto-return",
+  "homepage": "https://github.com/miraks/babel-plugin-implicit-return",
   "devDependencies": {
     "babel-cli": "^6.5.1",
     "babel-core": "^6.5.2",
