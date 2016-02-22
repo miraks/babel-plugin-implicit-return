@@ -42,7 +42,7 @@ This plugin can't make a function to implicitly return an object literal due to 
 
 ```javascript
 function getObject() {
-  { key1: value1, key2: value2 }
+  { key1: value1, key2: value2 };
 }
 ```
 
@@ -51,12 +51,12 @@ There are two workarounds:
 ```javascript
 // first - assign a result to a variable/constant
 function getObject() {
-  const obj = { key1: value1, key2: value2 }
+  const obj = { key1: value1, key2: value2 };
 }
 
 // second - wrap an object literal in braces
 function getObject() {
-  ({ key1: value1, key2: value2 })
+  ({ key1: value1, key2: value2 });
 }
 ```
 
