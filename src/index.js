@@ -64,6 +64,7 @@ export default ({ types: t }) => {
           returnablePath.remove()
           returnPath.get("argument").replaceWith(lastNode)
 
+          // return argument was conveted to a function during the replacement
           if (t.isCallExpression(returnNode.argument)) {
             returnNode.argument.callee._noImplicitReturn = true
           }
