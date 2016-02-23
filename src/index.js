@@ -17,10 +17,12 @@ export default ({ types: t }) => {
     return node
   }
 
-  const hasReturn = (path) => {
+  const hasUnreturnable = (path) => {
     let result = false
     path.traverse({
-      ReturnStatement() { result = true }
+      enter(path) {
+        if (unreturnableStatements.has(path.node.type)) result = true
+      }
     })
     return result
   }
@@ -74,7 +76,7 @@ export default ({ types: t }) => {
           const returnNode = t.returnStatement(t.thisExpression())
           const returnPath = lastPath.insertAfter(returnNode)[0]
 
-          if (t.isStatement(lastNode) && t.isIfStatement(unwrapBlocks(lastNode)) && hasReturn(lastPath)) {
+          if (t.isStatement(lastNode) && t.isIfStatement(unwrapBlocks(lastNode)) && hasUnreturnable(lastPath)) {
             // HACK: forces replaceWith to wrap the return argument into a function
             // since babel's toSequenceExpression can't correctly convert if statement
             // with return expression
