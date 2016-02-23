@@ -57,23 +57,13 @@ export default ({ types: t }) => {
 
         // convert returnable statements
         if (returnableStatements.has(lastNode.type)) {
-          const thisNode = t.thisExpression()
-          let thisPath = null
+          const returnablePath = path.get(`body.body.${lastIndex}`)
+          const returnNode = t.returnStatement(t.thisExpression())
+          const returnPath = returnablePath.insertAfter(returnNode)[0]
 
-          path.traverse({
-            [lastNode.type](subPath) {
-              if (subPath.node != lastNode) return
-              const returnNode = t.returnStatement(thisNode)
-              thisPath = subPath.insertAfter(returnNode)[0].get("argument")
-              subPath.remove()
-            }
-          })
+          returnablePath.remove()
+          returnPath.get("argument").replaceWith(lastNode)
 
-          // this can't be replaced with last node during the traversal as it may cause an infinite loop
-          thisPath.replaceWith(lastNode)
-
-          const returnNode = thisPath.parentPath.node
-          // return argument was conveted to a function during the replacement
           if (t.isCallExpression(returnNode.argument)) {
             returnNode.argument.callee._noImplicitReturn = true
           }
