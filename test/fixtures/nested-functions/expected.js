@@ -1,6 +1,6 @@
-function foo() {
-  return function foo() {
-    return function foo() {
+function fn() {
+  return function fn() {
+    return function fn() {
       return 1;
     };
   };

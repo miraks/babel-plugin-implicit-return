@@ -1,13 +1,13 @@
-class Foo {
+class Thing {
   constructor() {
     return super();
   }
 
-  foo() {
+  fn() {
     return 1;
   }
 
-  static foo() {
+  static fn() {
     return 1;
   }
 }

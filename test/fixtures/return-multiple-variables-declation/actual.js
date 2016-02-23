@@ -1,3 +1,3 @@
-function foo() {
-  const a = 1, b = "foo", c = { foo: "foo", bar: 1 }
+function fn() {
+  const a = 1, b = "str", c = { key: "value", other: 1 }
 }

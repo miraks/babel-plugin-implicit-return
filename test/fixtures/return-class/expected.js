@@ -1,3 +1,3 @@
-function foo() {
-  return class Foo {};
+function fn() {
+  return class Thing {};
 }

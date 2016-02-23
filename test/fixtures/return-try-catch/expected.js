@@ -1,4 +1,4 @@
-function foo() {
+function fn() {
   return function () {
     try {
       return 1;

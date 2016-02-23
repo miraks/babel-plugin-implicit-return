@@ -1,3 +1,3 @@
-function foo(a) {
+function fn(a) {
   return a > 0 ? 1 : undefined;
 }

@@ -1,4 +1,4 @@
-const foo = {
+const obj = {
   a: function() {
     1
   },

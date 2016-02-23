@@ -1,4 +1,4 @@
-function foo() {
-  "foo"
-  "bar"
+function fn() {
+  "a"
+  "b"
 }

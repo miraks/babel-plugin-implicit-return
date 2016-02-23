@@ -1,3 +1,3 @@
-function foo() {
-  class Foo {}
+function fn() {
+  class Thing {}
 }

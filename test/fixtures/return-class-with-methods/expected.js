@@ -1,9 +1,9 @@
-function foo() {
-  return class Foo {
+function fn() {
+  return class Thing {
     constructor() {
       return super();
     }
-    foo() {
+    fn() {
       return 1;
     }
   };

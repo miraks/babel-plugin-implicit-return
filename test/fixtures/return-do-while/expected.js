@@ -1,4 +1,4 @@
-function foo() {
+function fn() {
   let n = 0;
   return function () {
     var _ret;

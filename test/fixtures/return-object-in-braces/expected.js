@@ -1,3 +1,3 @@
-function foo() {
-  return { foo: "foo", bar: 1 };
+function fn() {
+  return { key: "value", other: 1 };
 }

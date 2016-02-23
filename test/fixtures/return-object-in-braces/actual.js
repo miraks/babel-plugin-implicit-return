@@ -1,3 +1,3 @@
-function foo() {
-  ({ foo: "foo", bar: 1 })
+function fn() {
+  ({ key: "value", other: 1 })
 }

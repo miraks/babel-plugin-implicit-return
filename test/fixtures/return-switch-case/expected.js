@@ -1,4 +1,4 @@
-function foo(a) {
+function fn(a) {
   return function () {
     switch (a) {
       case "a":

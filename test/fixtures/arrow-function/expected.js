@@ -1,3 +1,3 @@
-const foo = () => {
+const fn = () => {
   return 1;
 };

@@ -1,4 +1,4 @@
-function foo() {
+function fn() {
   const obj = { a: 1, b: 2 };
   return function () {
     var _ret;

@@ -1,5 +1,5 @@
-function foo() {
-  "foo";
+function fn() {
+  "a";
 
-  return "bar";
+  return "b";
 }

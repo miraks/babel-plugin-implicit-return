@@ -1,4 +1,4 @@
-function foo() {
+function fn() {
   let n = 0
   do {
     n += 1

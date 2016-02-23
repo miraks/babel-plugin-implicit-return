@@ -1,4 +1,4 @@
-function foo() {
+function fn() {
   const arr = [1, 2, 3]
   for (let n in arr) {
     n + 1
