@@ -69,7 +69,7 @@ export default ({ types: t }) => {
             }
           })
 
-          // this can't be replaced with last node during the traverse as it may cause an infinite loop
+          // this can't be replaced with last node during the traversal as it may cause an infinite loop
           thisPath.replaceWithMultiple([lastNode])
 
           const returnNode = thisPath.parentPath.node
