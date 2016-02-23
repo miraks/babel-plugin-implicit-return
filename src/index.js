@@ -12,6 +12,19 @@ export default ({ types: t }) => {
     }
   }
 
+  const unwrapBlocks = (node) => {
+    while (t.isBlockStatement(node)) node = node.body
+    return node
+  }
+
+  const hasReturn = (path) => {
+    let result = false
+    path.traverse({
+      ReturnStatement() { result = true }
+    })
+    return result
+  }
+
   // like babel-types#toExpression, but preserves function expressions
   const toExpression = (node) => {
     if (t.isExpressionStatement(node)) node = node.expression
@@ -50,6 +63,7 @@ export default ({ types: t }) => {
         }
 
         const lastIndex = lastNotEmptyIndex(body)
+        const lastPath = path.get(`body.body.${lastIndex}`)
         const lastNode = body[lastIndex]
 
         // skip unreturnable statements
@@ -57,17 +71,29 @@ export default ({ types: t }) => {
 
         // convert returnable statements
         if (returnableStatements.has(lastNode.type)) {
-          const returnablePath = path.get(`body.body.${lastIndex}`)
           const returnNode = t.returnStatement(t.thisExpression())
-          const returnPath = returnablePath.insertAfter(returnNode)[0]
+          const returnPath = lastPath.insertAfter(returnNode)[0]
 
-          returnablePath.remove()
-          returnPath.get("argument").replaceWith(lastNode)
+          if (t.isStatement(lastNode) && t.isIfStatement(unwrapBlocks(lastNode)) && hasReturn(lastPath)) {
+            // HACK: forces replaceWith to wrap the return argument into a function
+            // since babel's toSequenceExpression can't correctly convert if statement
+            // with return expression
+            // This hack probably can be replaced with something using getCompletionRecords
+            const functionIdentifier = path.scope.generateUidIdentifier("temp")
+            const functionNode = t.functionDeclaration(functionIdentifier, [], t.blockStatement([lastNode]))
+            returnPath.get("argument").replaceWith(functionNode)
+            const blockPath = returnPath.get("argument.callee.body")
+            blockPath.replaceWith(blockPath.node.body[0].body)
+          } else {
+            returnPath.get("argument").replaceWith(lastNode)
+          }
 
           // return argument was conveted to a function during the replacement
           if (t.isCallExpression(returnNode.argument)) {
             returnNode.argument.callee._noImplicitReturn = true
           }
+
+          lastPath.remove()
 
           return
         }
