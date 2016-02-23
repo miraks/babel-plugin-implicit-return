@@ -64,16 +64,12 @@ export default ({ types: t }) => {
             [lastNode.type](subPath) {
               if (subPath.node != lastNode) return
               const returnNode = t.returnStatement(thisNode)
-              subPath.insertAfter(returnNode)
+              thisPath = subPath.insertAfter(returnNode)[0].get("argument")
               subPath.remove()
-            },
-            ThisExpression(subPath) {
-              if (subPath.node != thisNode) return
-              // this can't be replaced with last node as it may cause an infinite loop
-              thisPath = subPath
             }
           })
 
+          // this can't be replaced with last node during the traverse as it may cause an infinite loop
           thisPath.replaceWithMultiple([lastNode])
 
           const returnNode = thisPath.parentPath.node
