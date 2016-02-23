@@ -70,7 +70,7 @@ export default ({ types: t }) => {
           })
 
           // this can't be replaced with last node during the traversal as it may cause an infinite loop
-          thisPath.replaceWithMultiple([lastNode])
+          thisPath.replaceWith(lastNode)
 
           const returnNode = thisPath.parentPath.node
           // return argument was conveted to a function during the replacement
