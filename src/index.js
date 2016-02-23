@@ -1,7 +1,7 @@
 export default ({ types: t }) => {
   const unreturnableStatements = new Set(["DebuggerStatement", "WithStatement", "ReturnStatement", "LabeledStatement",
     "BreakStatement", "ContinueStatement", "ThrowStatement"])
-  const returnableStatements = new Set(["IfStatement", "SwitchStatement"])
+  const returnableStatements = new Set(["IfStatement", "SwitchStatement", "TryStatement"])
 
   const last = (array) => array[array.length - 1]
 
