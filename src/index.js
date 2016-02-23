@@ -1,6 +1,7 @@
 export default ({ types: t }) => {
   const unreturnableStatements = new Set(["DebuggerStatement", "WithStatement", "ReturnStatement", "LabeledStatement",
     "BreakStatement", "ContinueStatement", "ThrowStatement"])
+  const returnableStatements = new Set(["IfStatement"])
 
   const last = (array) => array[array.length - 1]
 
@@ -26,7 +27,9 @@ export default ({ types: t }) => {
 
   return {
     visitor: {
-      Function({ node }) {
+      Function(path) {
+        const { node } = path
+
         // arrow function expression
         if (node.expression) return
 
@@ -39,6 +42,7 @@ export default ({ types: t }) => {
           // function with directives only
           const directive = directives.pop()
           body.push(t.returnStatement(t.stringLiteral(directive.value.value)))
+
           return
         }
 
@@ -47,6 +51,26 @@ export default ({ types: t }) => {
 
         // skip unreturnable statements
         if (unreturnableStatements.has(lastNode.type)) return
+
+        // convert returnable statements
+        if (returnableStatements.has(lastNode.type)) {
+          const thisNode = t.thisExpression()
+
+          path.traverse({
+            [lastNode.type](subPath) {
+              if (subPath.node != lastNode) return
+              const returnNode = t.returnStatement(thisNode)
+              subPath.insertAfter(returnNode)
+              subPath.remove()
+            },
+            ThisExpression(subPath) {
+              if (subPath.node != thisNode) return
+              subPath.replaceWithMultiple([lastNode])
+            }
+          })
+
+          return
+        }
 
         // variables declaration
         if (t.isVariableDeclaration(lastNode)) {
@@ -61,6 +85,7 @@ export default ({ types: t }) => {
           }
 
           body.push(t.returnStatement(id))
+
           return
         }
 
