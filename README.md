@@ -56,7 +56,7 @@ function getObject() {
   const obj = { key1: value1, key2: value2 };
 }
 
-// second - wrap an object literal in braces
+// second - wrap an object literal with braces
 function getObject() {
   ({ key1: value1, key2: value2 });
 }
@@ -90,7 +90,7 @@ function getObject() {
   const fn = function() {};
 }
 
-// fourth - wrap a function in braces
+// fourth - wrap a function with braces
 function getObject() {
   (function() {});
 }
