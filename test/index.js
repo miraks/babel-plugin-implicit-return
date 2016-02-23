@@ -3,7 +3,7 @@ import path from "path"
 import { expect } from "chai"
 import { transformFileSync } from "babel-core"
 
-describe("Adds return", () => {
+describe("Check", () => {
   const fixturesDir = path.join(__dirname, "fixtures")
 
   fs.readdirSync(fixturesDir).forEach((caseName) => {
