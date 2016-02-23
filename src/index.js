@@ -1,7 +1,7 @@
 export default ({ types: t }) => {
   const unreturnableStatements = new Set(["DebuggerStatement", "WithStatement", "ReturnStatement", "LabeledStatement",
     "BreakStatement", "ContinueStatement", "ThrowStatement"])
-  const returnableStatements = new Set(["IfStatement"])
+  const returnableStatements = new Set(["IfStatement", "SwitchStatement"])
 
   const last = (array) => array[array.length - 1]
 
@@ -30,6 +30,8 @@ export default ({ types: t }) => {
       Function(path) {
         const { node } = path
 
+        if (node._noImplicitReturn) return
+
         // arrow function expression
         if (node.expression) return
 
@@ -55,6 +57,7 @@ export default ({ types: t }) => {
         // convert returnable statements
         if (returnableStatements.has(lastNode.type)) {
           const thisNode = t.thisExpression()
+          let thisPath = null
 
           path.traverse({
             [lastNode.type](subPath) {
@@ -65,9 +68,18 @@ export default ({ types: t }) => {
             },
             ThisExpression(subPath) {
               if (subPath.node != thisNode) return
-              subPath.replaceWithMultiple([lastNode])
+              // this can't be replaced with last node as it may cause an infinite loop
+              thisPath = subPath
             }
           })
+
+          thisPath.replaceWithMultiple([lastNode])
+
+          const returnNode = thisPath.parentPath.node
+          // return argument was conveted to a function during the replacement
+          if (t.isCallExpression(returnNode.argument)) {
+            returnNode.argument.callee._noImplicitReturn = true
+          }
 
           return
         }
