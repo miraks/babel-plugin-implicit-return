@@ -12,21 +12,6 @@ export default ({ types: t }) => {
     }
   }
 
-  const unwrapBlocks = (node) => {
-    while (t.isBlockStatement(node)) node = node.body
-    return node
-  }
-
-  const hasUnreturnable = (path) => {
-    let result = false
-    path.traverse({
-      enter(path) {
-        if (unreturnableStatements.has(path.node.type)) result = true
-      }
-    })
-    return result
-  }
-
   // like babel-types#toExpression, but preserves function expressions
   const toExpression = (node) => {
     if (t.isExpressionStatement(node)) node = node.expression
@@ -45,8 +30,6 @@ export default ({ types: t }) => {
     visitor: {
       Function(path) {
         const { node } = path
-
-        if (node._noImplicitReturn) return
 
         // arrow function expression
         if (node.expression) return
@@ -84,7 +67,6 @@ export default ({ types: t }) => {
 
           const functionIdentifier = path.scope.generateUidIdentifier("wrap")
           const functionNode = t.functionDeclaration(functionIdentifier, [], t.blockStatement([lastNode]))
-          functionNode._noImplicitReturn = true
           returnPath.get("argument").replaceWith(functionNode)
 
           const functionParentNode = returnPath.node.argument.callee.body.body
