@@ -1,3 +1,11 @@
 function fn(a) {
-  return a >= 0 ? a == 0 ? 0 : 1 : -1;
+  if (a >= 0) {
+    if (a == 0) {
+      return 0;
+    } else {
+      return 1;
+    }
+  } else {
+    return -1;
+  }
 }

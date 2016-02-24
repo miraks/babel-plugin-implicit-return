@@ -1,3 +1,7 @@
 function fn(a) {
-  return a > 0 ? 1 : -1;
+  if (a > 0) {
+    return 1;
+  } else {
+    return -1;
+  }
 }

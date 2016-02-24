@@ -73,29 +73,26 @@ export default ({ types: t }) => {
 
         // convert returnable statements
         if (returnableStatements.has(lastNode.type)) {
+          // HACK: forces replaceWith to add implicit returns for us
+          // This hack probably should be replaced with something else
+          // using getCompletionRecords
+
           const returnNode = t.returnStatement(t.thisExpression())
           const returnPath = lastPath.insertAfter(returnNode)[0]
 
-          if (t.isIfStatement(unwrapBlocks(lastNode)) && hasUnreturnable(lastPath)) {
-            // HACK: forces replaceWith to wrap the return argument into a function
-            // since babel's toSequenceExpression can't correctly convert if statement
-            // with return expression
-            // This hack probably can be replaced with something using getCompletionRecords
-            const functionIdentifier = path.scope.generateUidIdentifier("temp")
-            const functionNode = t.functionDeclaration(functionIdentifier, [], t.blockStatement([lastNode]))
-            returnPath.get("argument").replaceWith(functionNode)
-            const blockPath = returnPath.get("argument.callee.body")
-            blockPath.replaceWith(blockPath.node.body[0].body)
-          } else {
-            returnPath.get("argument").replaceWith(lastNode)
-          }
-
-          // return argument was conveted to a function during the replacement
-          if (t.isCallExpression(returnNode.argument)) {
-            returnNode.argument.callee._noImplicitReturn = true
-          }
-
           lastPath.remove()
+
+          const functionIdentifier = path.scope.generateUidIdentifier("wrap")
+          const functionNode = t.functionDeclaration(functionIdentifier, [], t.blockStatement([lastNode]))
+          functionNode._noImplicitReturn = true
+          returnPath.get("argument").replaceWith(functionNode)
+
+          const functionParentNode = returnPath.node.argument.callee.body.body
+          returnPath.replaceWithMultiple(functionParentNode)
+
+          const functionIndex = body.findIndex((node) => node == functionNode)
+          const functionPath = path.get(`body.body.${functionIndex}`)
+          functionPath.replaceWith(functionPath.node.body.body[0])
 
           return
         }

@@ -1,11 +1,9 @@
 function fn() {
-  let n = 0;
-  return function () {
-    var _ret;
+  var _ret;
 
-    do {
-      _ret = n += 1;
-    } while (n < 5);
-    return _ret;
-  }();
+  let n = 0;
+  do {
+    _ret = n += 1;
+  } while (n < 5);
+  return _ret;
 }

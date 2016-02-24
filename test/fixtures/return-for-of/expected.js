@@ -1,11 +1,9 @@
 function fn() {
-  const obj = { a: 1, b: 2 };
-  return function () {
-    var _ret;
+  var _ret;
 
-    for (let entry of obj) {
-      _ret = entry[0] + entry[1];
-    }
-    return _ret;
-  }();
+  const obj = { a: 1, b: 2 };
+  for (let entry of obj) {
+    _ret = entry[0] + entry[1];
+  }
+  return _ret;
 }

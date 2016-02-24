@@ -1,3 +1,5 @@
 function fn(a) {
-  return a > 0 ? 1 : undefined;
+  if (a > 0) {
+    return 1;
+  }
 }
