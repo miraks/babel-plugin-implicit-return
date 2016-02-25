@@ -16,6 +16,7 @@ describe("Check", () => {
           "syntax-object-rest-spread",
           "syntax-async-functions",
           "syntax-async-generators",
+          "transform-react-jsx",
           "./src/index.js"
         ]
       }).code
