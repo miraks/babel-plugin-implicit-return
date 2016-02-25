@@ -11,7 +11,12 @@ describe("Check", () => {
       const fixtureDir = path.join(fixturesDir, caseName)
       const actualPath = path.join(fixtureDir, "actual.js")
       const actual = transformFileSync(actualPath, {
-        babelrc: false, plugins: ["syntax-object-rest-spread", "./src/index.js"]
+        babelrc: false,
+        plugins: [
+          "syntax-object-rest-spread",
+          "syntax-async-functions",
+          "./src/index.js"
+        ]
       }).code
       const expected = fs.readFileSync(path.join(fixtureDir, "expected.js")).toString()
 
