@@ -56,25 +56,21 @@ export default ({ types: t }) => {
 
         // convert returnable statements
         if (returnableStatements.has(lastNode.type)) {
-          // HACK: forces replaceWith to add implicit returns for us
-          // This hack probably should be replaced with something else
-          // using getCompletionRecords
+          const completionRecords = lastPath.getCompletionRecords()
 
-          const returnNode = t.returnStatement(t.thisExpression())
-          const returnPath = lastPath.insertAfter(returnNode)[0]
+          completionRecords.forEach((subPath) => {
+            if (!subPath.isExpressionStatement()) return
 
-          lastPath.remove()
+            const isLoop = subPath.findParent((subPath) => subPath.isLoop())
 
-          const functionIdentifier = path.scope.generateUidIdentifier("wrap")
-          const functionNode = t.functionDeclaration(functionIdentifier, [], t.blockStatement([lastNode]))
-          returnPath.get("argument").replaceWith(functionNode)
-
-          const functionParentNode = returnPath.node.argument.callee.body.body
-          returnPath.replaceWithMultiple(functionParentNode)
-
-          const functionIndex = body.findIndex((node) => node == functionNode)
-          const functionPath = path.get(`body.body.${functionIndex}`)
-          functionPath.replaceWith(functionPath.node.body.body[0])
+            if (isLoop) {
+              const uid = path.scope.generateDeclaredUidIdentifier("ret")
+              path.get("body").pushContainer("body", t.returnStatement(uid))
+              subPath.get("expression").replaceWith(t.assignmentExpression("=", uid, subPath.node.expression))
+            } else {
+              subPath.replaceWith(t.returnStatement(subPath.node.expression))
+            }
+          })
 
           return
         }
