@@ -15,6 +15,7 @@ describe("Check", () => {
         plugins: [
           "syntax-object-rest-spread",
           "syntax-async-functions",
+          "syntax-async-generators",
           "./src/index.js"
         ]
       }).code
