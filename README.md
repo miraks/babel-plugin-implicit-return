@@ -2,6 +2,107 @@
 
 Implicitly return function result
 
+## Examples
+
+```javascript
+// Before
+function Pi() {
+  3.14;
+}
+
+// After
+function Pi() {
+  return 3.14;
+}
+```
+
+```javascript
+// Before
+function abs(n) {
+  if (n > 0) {
+    1;
+  } else if (n < 0) {
+    -1;
+  } else {
+    0;
+  }
+}
+
+// After
+function abs(n) {
+  if (n > 0) {
+    return 1;
+  } else if (n < 0) {
+    return -1;
+  } else {
+    return 0;
+  }
+}
+```
+
+```javascript
+// Before
+function sum(array) {
+  let result = 0;
+  for (let i = 0; i < array.length; i++) {
+    result += array[i]
+  }
+}
+
+// After
+function sum(array) {
+  var _ret;
+
+  let result = 0;
+  for (let i = 0; i < array.length; i++) {
+    _ret = result += array[i];
+  }
+  return _ret;
+}
+```
+
+```javascript
+// Before
+function classFactory() {
+  class Thingy extends Thing {
+    constructor() {
+      super();
+    }
+
+    fn() {
+      () => 1;
+    }
+
+    static fn() {
+      class Other {};
+    }
+  }
+}
+
+// After
+function classFactory() {
+  return class Thingy extends Thing {
+    constructor() {
+      return super();
+    }
+
+    fn() {
+      return () => 1;
+    }
+
+    static fn() {
+      return class Other {};
+    }
+  }
+}
+```
+
+## Requirements
+
+Your compiling enviroment must have support for:
+
+* [Set](https://developer.mozilla.org/docs/Web/JavaScript/Reference/Global_Objects/Set)
+
 ## Installation
 
 ```sh
@@ -44,7 +145,7 @@ This won't work:
 
 ```javascript
 function getObject() {
-  { key1: value1, key2: value2 };
+  { key1: value1, key2: value2 }; // Syntax Error
 }
 ```
 
@@ -68,7 +169,7 @@ This won't work:
 
 ```javascript
 function getFunction() {
-  function() {};
+  function() {}; // Syntax Error
 }
 ```
 
