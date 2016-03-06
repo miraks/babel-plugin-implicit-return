@@ -57,6 +57,7 @@ export default ({ types: t }) => {
         // convert returnable statements
         if (returnableStatements.has(lastNode.type)) {
           const completionRecords = lastPath.getCompletionRecords()
+          let returnUid = null
 
           completionRecords.forEach((subPath) => {
             if (!subPath.isExpressionStatement()) return
@@ -64,13 +65,16 @@ export default ({ types: t }) => {
             const isLoop = subPath.findParent((subPath) => subPath.isLoop())
 
             if (isLoop) {
-              const uid = path.scope.generateDeclaredUidIdentifier("ret")
-              path.get("body").pushContainer("body", t.returnStatement(uid))
-              subPath.get("expression").replaceWith(t.assignmentExpression("=", uid, subPath.node.expression))
+              if (!returnUid) returnUid = path.scope.generateDeclaredUidIdentifier("ret")
+              subPath.get("expression").replaceWith(t.assignmentExpression("=", returnUid, subPath.node.expression))
             } else {
               subPath.replaceWith(t.returnStatement(subPath.node.expression))
             }
           })
+
+          if (returnUid) {
+            path.get("body").pushContainer("body", t.returnStatement(returnUid))
+          }
 
           return
         }
