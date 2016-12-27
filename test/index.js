@@ -2,7 +2,7 @@ import fs from "fs"
 import path from "path"
 import { expect } from "chai"
 import { transformFileSync } from "babel-core"
-import plugin from '../src/index'
+import plugin from "../src/index"
 
 describe("Check", () => {
   const fixturesDir = path.join(__dirname, "fixtures")
