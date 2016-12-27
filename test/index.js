@@ -17,6 +17,7 @@ describe("Check", () => {
           "syntax-async-functions",
           "syntax-async-generators",
           "transform-react-jsx",
+          "syntax-flow",
           "./src/index.js"
         ]
       }).code

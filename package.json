@@ -33,6 +33,7 @@
     "babel-plugin-strict-equality": "^1.0.0",
     "babel-plugin-syntax-async-functions": "^6.5.0",
     "babel-plugin-syntax-async-generators": "^6.5.0",
+    "babel-plugin-syntax-flow": "^6.5.0",
     "babel-plugin-syntax-object-rest-spread": "^6.5.0",
     "babel-plugin-transform-react-jsx": "^6.5.2",
     "babel-preset-es2015": "^6.5.0",
