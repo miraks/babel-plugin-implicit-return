@@ -2,6 +2,7 @@ import fs from "fs"
 import path from "path"
 import { expect } from "chai"
 import { transformFileSync } from "babel-core"
+import plugin from '../src/index'
 
 describe("Check", () => {
   const fixturesDir = path.join(__dirname, "fixtures")
@@ -18,7 +19,7 @@ describe("Check", () => {
           "syntax-async-generators",
           "transform-react-jsx",
           "syntax-flow",
-          "./src/index.js"
+          plugin
         ]
       }).code
       const expected = fs.readFileSync(path.join(fixtureDir, "expected.js")).toString()
