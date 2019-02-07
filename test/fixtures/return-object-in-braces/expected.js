@@ -1,3 +1,6 @@
 function fn() {
-  return { key: "value", other: 1 };
+  return {
+    key: "value",
+    other: 1
+  };
 }

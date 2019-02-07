@@ -36,14 +36,18 @@ export default ({ types: t }) => {
 
         const { body, directives } = node.body
 
-        if (body.length == 0) {
-          // empty function
-          if (directives.length == 0) return
+        try {
+          if (body.length == 0) {
+            // empty function
+            if (directives.length == 0) return
 
-          // function with directives only
-          const directive = directives.pop()
-          body.push(t.returnStatement(t.stringLiteral(directive.value.value)))
+            // function with directives only
+            const directive = directives.pop()
+            body.push(t.returnStatement(t.stringLiteral(directive.value.value)))
 
+            return
+          }
+        } catch (error) {
           return
         }
 
@@ -52,7 +56,11 @@ export default ({ types: t }) => {
         const lastNode = body[lastIndex]
 
         // skip unreturnable statements
-        if (unreturnableStatements.has(lastNode.type)) return
+        try {
+          if (unreturnableStatements.has(lastNode.type)) return
+        } catch (error) {
+          return
+        }
 
         // convert returnable statements
         if (returnableStatements.has(lastNode.type)) {
