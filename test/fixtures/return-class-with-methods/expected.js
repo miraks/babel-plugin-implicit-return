@@ -3,8 +3,10 @@ function fn() {
     constructor() {
       return super();
     }
+
     fn() {
       return 1;
     }
+
   };
 }

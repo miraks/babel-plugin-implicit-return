@@ -1,7 +1,7 @@
 import fs from "fs"
 import path from "path"
 import { expect } from "chai"
-import { transformFileSync } from "babel-core"
+import { transformFileSync } from "@babel/core"
 import plugin from "../src/index"
 
 describe("Check", () => {

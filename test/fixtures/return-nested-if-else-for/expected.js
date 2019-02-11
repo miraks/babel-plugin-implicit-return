@@ -20,5 +20,6 @@ function foo() {
       _ret = res *= b;
     }
   }
+
   return _ret;
 }

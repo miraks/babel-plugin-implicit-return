@@ -6,5 +6,6 @@ function fn() {
       _ret = n + k;
     }
   }
+
   return _ret;
 }

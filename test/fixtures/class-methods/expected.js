@@ -10,4 +10,5 @@ class Thing {
   static fn() {
     return 1;
   }
+
 }
